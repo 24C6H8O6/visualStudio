@@ -1,4 +1,4 @@
-﻿namespace serverTest1
+﻿namespace TestServer
 {
     partial class Form1
     {
@@ -28,67 +28,44 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
             textBox = new RichTextBox();
-            textBox1 = new TextBox();
-            button2 = new Button();
+            btnListen = new Button();
             SuspendLayout();
-            // 
-            // button1
-            // 
-            button1.Location = new Point(12, 344);
-            button1.Name = "button1";
-            button1.Size = new Size(776, 23);
-            button1.TabIndex = 0;
-            button1.Text = "Listen";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += clientListen;
             // 
             // textBox
             // 
-            textBox.Location = new Point(12, 12);
+            textBox.Location = new Point(22, 20);
             textBox.Name = "textBox";
-            textBox.Size = new Size(776, 312);
-            textBox.TabIndex = 1;
+            textBox.ReadOnly = true;
+            textBox.Size = new Size(754, 356);
+            textBox.TabIndex = 0;
             textBox.Text = "";
             // 
-            // textBox1
+            // btnListen
             // 
-            textBox1.Location = new Point(15, 387);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(620, 23);
-            textBox1.TabIndex = 2;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(666, 387);
-            button2.Name = "button2";
-            button2.Size = new Size(122, 23);
-            button2.TabIndex = 3;
-            button2.Text = "SendtoClient";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += sendTextTo;
+            btnListen.Location = new Point(22, 383);
+            btnListen.Name = "btnListen";
+            btnListen.Size = new Size(754, 27);
+            btnListen.TabIndex = 1;
+            btnListen.Text = "Listen";
+            btnListen.UseVisualStyleBackColor = true;
+            btnListen.Click += btnListen_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(button2);
-            Controls.Add(textBox1);
+            Controls.Add(btnListen);
             Controls.Add(textBox);
-            Controls.Add(button1);
             Name = "Form1";
-            Text = "Server";
+            Text = "Form1";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Button button1;
         private RichTextBox textBox;
-        private TextBox textBox1;
-        private Button button2;
+        private Button btnListen;
     }
 }
