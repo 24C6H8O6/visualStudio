@@ -12,7 +12,7 @@ namespace ClientTest1
     public partial class Form1 : Form
     {
         client Client = new client();
-        private string selectFileName;
+        private string selectFilePath;
         public Form1()
         {
             InitializeComponent();
@@ -68,22 +68,37 @@ namespace ClientTest1
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             { 
-                selectFileName = openFileDialog.FileName;
-                textBox3.Text = selectFileName;
+                selectFilePath = openFileDialog.FileName;
+                textBox3.Text = selectFilePath;
             }
         }
         
         private async void sendFile(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(selectFileName))
+            if (string.IsNullOrEmpty(selectFilePath))
             {
                 textBox.AppendText("파일을 선택하세요.");
                 return;
             }
-            byte[] fileData = File.ReadAllBytes(selectFileName);
-            string fileName = Path.GetFileName(selectFileName);
+            byte[] buffer = new byte[1024];
+            byte[] fileData = File.ReadAllBytes(selectFilePath);
+            string fileName = Path.GetFileName(selectFilePath);
             string fileContent = Convert.ToBase64String(fileData);
             string sendText = $"sendFile★{textBox3.Text}★{fileName}★{fileContent}";
+            using (FileStream fileStream = new FileStream(selectFilePath, FileMode.Open, FileAccess.Read))
+            {
+                byte[] message_data = Encoding.UTF8.GetBytes(sendText);
+                Client.clientSocket.Send(message_data, 0, message_data.Length, SocketFlags.None);
+                byte[] file_buffer = new byte[1024];
+                int read_file_byte;
+                long total_byte = 0;
+                while ((read_file_byte = fileStream.Read(file_buffer, 0, file_buffer.Length)) > 0)
+                {
+                    Client.clientSocket.Send(file_buffer, 0, read_file_byte, SocketFlags.None);
+                    total_byte += read_file_byte;
+                }
+            }
+            
             await Client.sendAsync(Client.clientSocket, sendText);
             textBox.AppendText("파일 전송 완료!\n");
         }
